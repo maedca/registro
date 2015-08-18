@@ -45,10 +45,60 @@
                             location.reload(true);
                         }
                     });
+                }else if(procedimiento == 'editar'){
+                    $.ajax({
+                        url : 'editar.php',
+                        type : 'POST',
+                        data : datos,
+                        success : function (r) {
+                            alert(r);
+                            $('#loader').hide()
+                            location.reload(true);
+                        }
+                    });
                 }
 
             });
         });
+
+        var user_id = $(this).colsest('td').find('.userId').text();
+        function eliminar(cedula){
+            var ced = "cedula="+cedula;
+            $.ajax({
+                url:"eliminar.php",
+                data: ced,
+                type: "POST",
+                success : function (resultado) {
+                    alert(resultado);
+                    location.reload(true);
+                }
+            });
+        }
+
+        function editar(cedula)
+        {
+            $("#leyenda").html("Actualizar Paciente");
+            procedimiento = "editar";
+            var ced = "cedula="+cedula;
+            $.ajax({
+                url:"buscarestudiante.php",
+                data: ced,
+                type: "POST",
+                dataType: "json",
+                success:
+                    function(respuesta)
+                    {
+                        $("#formularioRegistrar").show();
+                        $("#btnNuevo").val("Cancelar");
+                        $("#txtCedula").val(respuesta.ced);
+                        $("#txtNombres").val(respuesta.nom);
+                        $("#txtApellidos").val(respuesta.apel);
+                        $("#txtFechaNac").val(respuesta.fn);
+                        $("#txtTel").val(respuesta.tel);
+                        $("#txtDir").val(respuesta.dir);
+                    }
+            })
+        }
     </script>
 </head>
 <body>
@@ -80,8 +130,8 @@
             <td><?php echo $reg['FECHA_NAC'] ?></td>
             <td><?php echo $reg['TEL'] ?></td>
             <td><?php echo $reg['DIR'] ?></td>
-            <td><img src="images/refresh.png" style="cursor: pointer" onclick="editar(<?php echo $datos['CEDULA'] ?>)">
-                <img src="images/delete.png" style="cursor: pointer" onclick="eliminar(<?php echo $datos['CEDULA'] ?>)">
+            <td><img src="images/refresh.png" style="cursor: pointer" onclick="editar(<?php echo $reg['CEDULA'] ?>)">
+                <img src="images/delete.png" style="cursor: pointer;" onclick="eliminar('<?php echo $reg['CEDULA']; ?>')"
             </td>
 
         </tr>
