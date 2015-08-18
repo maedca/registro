@@ -6,14 +6,6 @@
  * Time: 02:28 PM
  */
 
-function Conectar(){
-    $servidor = "localhost";
-    $usuarios = "root";
-    $clave = "root";
-    $db = "estudiante";
-
-    $con = mysql_connect($servidor, $usuarios, $clave) or die("no se puede conectar");
-    mysql_select_db($db);
-
-    return $con;
-}
+$link = new mysqli("localhost", "root", "root", "estudiante");
+if ($link->connect_error)
+    die("no se puede conectar a la base de datos");
